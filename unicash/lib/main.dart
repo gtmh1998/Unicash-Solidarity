@@ -5,13 +5,21 @@ void main() async {
   // Assurez-vous que Flutter est initialisé
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialisez Supabase
-  await Supabase.initialize(
-    url: 'https://gljfdduzkyuognlzppek.supabase.co',
-    anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdsamZkZHV6a3l1b2dubHpwcGVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyMjkwMTcsImV4cCI6MjA3MTgwNTAxN30.b78HGygM78ulh7byWugODBytvhrldhTiYV1shmJbMtA", // Remplacez par votre clé anonyme réelle depuis Supabase
-  );
-
-  runApp(const MyApp());
+  // Initialisez Supabase avec gestion des erreurs
+  try {
+    await Supabase.initialize(
+      url: 'https://gljfdduzkyuognlzppek.supabase.co',
+      anonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdsamZkZHV6a3l1b2dubHpwcGVrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYyMjkwMTcsImV4cCI6MjA3MTgwNTAxN30.b78HGygM78ulh7byWugODBytvhrldhTiYV1shmJbMtA",
+    );
+    runApp(const MyApp());
+  } catch (e) {
+    // Gestion d'erreur si Supabase ne se connecte pas
+    runApp(MaterialApp(
+      home: Scaffold(
+        body: Center(child: Text('Erreur de connexion Supabase: $e')),
+      ),
+    ));
+  }
 }
 
 class MyApp extends StatelessWidget {
